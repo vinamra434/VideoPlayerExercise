@@ -1,6 +1,7 @@
 package com.silverorange.videoplayer.data.di
 
 import com.silverorange.videoplayer.BuildConfig
+import com.silverorange.videoplayer.data.remote.service.VideosAPI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,5 +27,8 @@ object NetworkModule {
             .client(okHttpClient)
             .addConverterFactory(factory)
             .build()
+
+    @Provides
+    fun provideVideosApi(retrofit: Retrofit): VideosAPI = retrofit.create(VideosAPI::class.java)
 
 }
