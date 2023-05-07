@@ -23,6 +23,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:4000/\"")
+        }
     }
     buildFeatures {
         compose true
