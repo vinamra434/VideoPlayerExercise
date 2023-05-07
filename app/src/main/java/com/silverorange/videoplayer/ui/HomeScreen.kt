@@ -1,6 +1,5 @@
 package com.silverorange.videoplayer.ui
 
-import android.widget.Toolbar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
@@ -10,11 +9,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.exoplayer2.ui.StyledPlayerView
 
 @Composable
 fun HomeScreen(
@@ -26,9 +28,9 @@ fun HomeScreen(
         ToolBar()
 
         if (loadingState.value) {
-            CircularLoader()
+            CircularLoader(Modifier.fillMaxSize())
         } else {
-
+            VideoPlayer(viewModel = viewModel)
         }
     }
 }
@@ -67,6 +69,27 @@ fun CircularLoader(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.weight(1f))
     }
 }
+
+
+@Composable
+fun VideoPlayer(
+    viewModel: HomeScreenViewModel,
+) {
+    val context = LocalContext.current
+
+    AndroidView(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(16 / 9f),
+        factory = {
+            StyledPlayerView(context).apply {
+                player = viewModel.player
+            }
+        },
+    )
+}
+
+
 
 @Preview
 @Composable
