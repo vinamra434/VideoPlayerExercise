@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
-    private val videosRepository: VideosRepository,
+    private val _videosRepository: VideosRepository,
     val player: Player
 ) : ViewModel() {
 
@@ -29,11 +29,21 @@ class HomeScreenViewModel @Inject constructor(
     private val _isPlaying = MutableStateFlow(player.isPlaying)
     val isPlaying = _isPlaying.asStateFlow()
 
+    //use to show hide/controls video controls
+    private val _showControls = MutableStateFlow(true)
+    val showControls = _showControls.asStateFlow()
+
+    private val _hasPreviousItem = MutableStateFlow(false)
+    val hasPreviousItem = _hasPreviousItem.asStateFlow()
+
+    private val _hasNextItem = MutableStateFlow(false)
+    val hasNextItem = _hasNextItem.asStateFlow()
+
     init {
         initializePlayer()
 
         viewModelScope.launch {
-            videosRepository
+            _videosRepository
                 .getVideos()
                 .onStart {
                     _loading.value = true
@@ -82,12 +92,22 @@ class HomeScreenViewModel @Inject constructor(
 
     private fun setVideosOnPlayer(items: List<MediaItem>) {
         player.setMediaItems(items)
+        _hasPreviousItem.value = player.hasPreviousMediaItem()
+        _hasNextItem.value = player.hasNextMediaItem()
     }
 
     fun updateIsPlaying(isPlaying: Boolean) {
         _isPlaying.value = isPlaying
     }
 
+    fun updateShowControls() {
+        _showControls.value = _showControls.value.not()
+    }
+
+    fun updatePreviousNextButton() {
+        _hasNextItem.value = player.hasNextMediaItem()
+        _hasPreviousItem.value = player.hasPreviousMediaItem()
+    }
 
     override fun onCleared() {
         super.onCleared()
