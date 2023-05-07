@@ -26,6 +26,9 @@ class HomeScreenViewModel @Inject constructor(
     private val _loading = MutableStateFlow(false)
     val loading = _loading.asStateFlow()
 
+    private val _isPlaying = MutableStateFlow(player.isPlaying)
+    val isPlaying = _isPlaying.asStateFlow()
+
     init {
         initializePlayer()
 
@@ -79,6 +82,10 @@ class HomeScreenViewModel @Inject constructor(
 
     private fun setVideosOnPlayer(items: List<MediaItem>) {
         player.setMediaItems(items)
+    }
+
+    fun updateIsPlaying(isPlaying: Boolean) {
+        _isPlaying.value = isPlaying
     }
 
 

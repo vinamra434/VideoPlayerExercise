@@ -78,6 +78,20 @@ fun TopVideoPlayer(
     modifier: Modifier = Modifier,
     viewModel: HomeScreenViewModel,
 ) {
+    val isPlaying = viewModel.isPlaying.collectAsState()
+
+    VideoPlayer(
+        viewModel = viewModel,
+        isPlaying = isPlaying.value
+    )
+}
+
+@Composable
+fun VideoPlayer(
+    modifier: Modifier = Modifier,
+    viewModel: HomeScreenViewModel,
+    isPlaying: Boolean,
+) {
     val context = LocalContext.current
 
     //used to manage video's state during changes in activity lifecycle
@@ -105,13 +119,14 @@ fun TopVideoPlayer(
         factory = {
             StyledPlayerView(context).apply {
                 player = viewModel.player
+                useController = false
             }
         },
         update = {
             when (lifecycle) {
                 Lifecycle.Event.ON_PAUSE, Lifecycle.Event.ON_CREATE -> {
                     it.onPause()
-                    it.player?.pause()
+                    it.player?.pause() //keep player paused on startup
                 }
                 Lifecycle.Event.ON_RESUME -> {
                     it.onResume()
@@ -119,6 +134,7 @@ fun TopVideoPlayer(
                 Lifecycle.Event.ON_STOP -> {
                     it.onPause()
                     it.player?.pause()
+                    viewModel.updateIsPlaying(isPlaying.not()) //when user moves out of app we need to manually update the play/pause icon
                 }
                 else -> Unit
             }
