@@ -101,7 +101,8 @@ fun TopVideoPlayer(
     ) {
         VideoPlayer(
             viewModel = viewModel,
-            isPlaying = isPlaying.value
+            isPlaying = isPlaying.value,
+            updateShowControls = { viewModel.updateShowControls() }
         )
 
         VideoPlayerControls(
@@ -137,6 +138,7 @@ fun VideoPlayer(
     modifier: Modifier = Modifier,
     viewModel: HomeScreenViewModel,
     isPlaying: Boolean,
+    updateShowControls: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -160,6 +162,7 @@ fun VideoPlayer(
 
     AndroidView(
         modifier = modifier
+            .clickable { updateShowControls() }
             .fillMaxWidth()
             .aspectRatio(16 / 9f),
         factory = {
