@@ -114,4 +114,34 @@ class HomeScreenViewModel @Inject constructor(
         player.release()
     }
 
+    fun onPreviousVideo() {
+        player.seekToPreviousMediaItem()
+        updatePreviousNextButton()
+        updateShowControls()
+        if (!isPlaying.value) {
+            player.play()
+            updateIsPlaying(true)
+        }
+    }
+
+    fun onNextVideo() {
+        player.seekToNextMediaItem()
+        updatePreviousNextButton()
+        updateShowControls()
+        if (!isPlaying.value) {
+            player.play()
+            updateIsPlaying(true)
+        }
+    }
+
+    fun onPlayPauseVideo() {
+        if (isPlaying.value) {
+            player.pause()
+        } else {
+            player.play()
+            updateShowControls()
+        }
+        updateIsPlaying(isPlaying.value.not())
+    }
+
 }

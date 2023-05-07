@@ -93,9 +93,8 @@ fun TopVideoPlayer(
     val hasNextVideoItem = viewModel.hasNextItem.collectAsState()
     val hasPreviousVideoItem = viewModel.hasPreviousItem.collectAsState()
 
-
     Box(
-        modifier = Modifier
+        modifier = modifier
             .wrapContentHeight()
             .border(1.dp, Color.Black, RectangleShape)
     ) {
@@ -111,23 +110,13 @@ fun TopVideoPlayer(
             hasPreviousVideoItem = hasPreviousVideoItem.value,
             hasNextVideoItem = hasNextVideoItem.value,
             onPreviousVideo = {
-                viewModel.player.seekToPreviousMediaItem()
-                viewModel.updatePreviousNextButton()
-                viewModel.updateShowControls()
+                viewModel.onPreviousVideo()
             },
             onPlayPauseVideo = {
-                if (viewModel.player.isPlaying) {
-                    viewModel.player.pause()
-                } else {
-                    viewModel.player.play()
-                }
-                viewModel.updateIsPlaying(isPlaying.value.not())
-                viewModel.updateShowControls()
+                viewModel.onPlayPauseVideo()
             },
             onNextVideo = {
-                viewModel.player.seekToNextMediaItem()
-                viewModel.updatePreviousNextButton()
-                viewModel.updateShowControls()
+                viewModel.onNextVideo()
             }
         )
     }
