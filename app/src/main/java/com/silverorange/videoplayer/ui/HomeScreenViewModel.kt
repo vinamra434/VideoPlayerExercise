@@ -17,9 +17,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-
-data class HomeState(val loading: Boolean = false)
-
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
     private val videosRepository: VideosRepository,
@@ -47,6 +44,7 @@ class HomeScreenViewModel @Inject constructor(
                         val format: DateFormat =
                             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
 
+                        //arrange videos in latest order by date
                         val videosResponseList: List<VideosResponse> =
                             response.sortedByDescending { format.parse(it.publishedAt) }
 
