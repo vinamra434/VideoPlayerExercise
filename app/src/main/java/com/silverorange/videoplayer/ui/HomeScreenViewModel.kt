@@ -104,7 +104,7 @@ class HomeScreenViewModel @Inject constructor(
         _showControls.value = _showControls.value.not()
     }
 
-    fun updatePreviousNextButton() {
+    private fun updatePreviousNextButton() {
         _hasNextItem.value = player.hasNextMediaItem()
         _hasPreviousItem.value = player.hasPreviousMediaItem()
     }

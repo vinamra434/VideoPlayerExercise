@@ -3,8 +3,7 @@ package com.silverorange.videoplayer.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
@@ -43,6 +42,7 @@ fun HomeScreen(
             CircularLoader(Modifier.fillMaxSize())
         } else {
             TopVideoPlayer(viewModel = viewModel)
+            BottomDetailsSection(viewModel = viewModel)
         }
     }
 }
@@ -251,6 +251,31 @@ fun VideoPlayerControls(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun BottomDetailsSection(modifier: Modifier = Modifier, viewModel: HomeScreenViewModel) {
+    Column(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .padding(13.dp)
+    ) {
+        Text(
+            text = "${viewModel.player.currentMediaItem?.mediaMetadata?.title}",
+            fontSize = 16.sp
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "${viewModel.player.currentMediaItem?.mediaMetadata?.artist}",
+            fontSize = 14.sp,
+            color = Color(0xFF6B6A6A)
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "${viewModel.player.currentMediaItem?.mediaMetadata?.description}",
+            fontSize = 14.sp
+        )
     }
 }
 
