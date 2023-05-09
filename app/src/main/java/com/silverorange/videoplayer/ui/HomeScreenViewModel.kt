@@ -87,7 +87,7 @@ class HomeScreenViewModel @Inject constructor(
 
     private fun initializePlayer() {
         player.prepare()
-        player.playWhenReady = true
+        player.playWhenReady = false
     }
 
     private fun setVideosOnPlayer(items: List<MediaItem>) {
