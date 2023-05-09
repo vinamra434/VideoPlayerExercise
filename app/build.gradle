@@ -24,7 +24,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:4000/\"")
+            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:4000/\"") //to use with emulator
+//            buildConfigField("String", "BASE_URL", "\"http://localhost:4000/\"")
         }
     }
     buildFeatures {

@@ -1,5 +1,6 @@
 package com.silverorange.videoplayer.ui
 
+import android.widget.TextView
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -23,11 +24,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.silverorange.videoplayer.R
+import io.noties.markwon.Markwon
 
 @Composable
 fun HomeScreen(
@@ -256,25 +259,70 @@ fun VideoPlayerControls(
 
 @Composable
 fun BottomDetailsSection(modifier: Modifier = Modifier, viewModel: HomeScreenViewModel) {
+
+    val mediaMetaData = viewModel.mediaItemMetaData.collectAsState()
+
+    val markwon = Markwon.builder(LocalContext.current).build()
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
             .padding(13.dp)
     ) {
-        Text(
-            text = "${viewModel.player.currentMediaItem?.mediaMetadata?.title}",
-            fontSize = 16.sp
+        AndroidView(
+            factory = {
+                TextView(it).apply {
+                    textSize = resources.getDimension(R.dimen.detail_text_size)
+                    setTextColor(ContextCompat.getColor(context, R.color.details_text_color))
+                    markwon.setMarkdown(
+                        this,
+                        mediaMetaData.value?.title.toString()
+                    )
+                }
+            },
+            update = {
+                markwon.setMarkdown(
+                    it,
+                    mediaMetaData.value?.title.toString()
+                )
+            }
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "${viewModel.player.currentMediaItem?.mediaMetadata?.artist}",
-            fontSize = 14.sp,
-            color = Color(0xFF6B6A6A)
+        AndroidView(
+            factory = {
+                TextView(it).apply {
+                    textSize = resources.getDimension(R.dimen.detail_text_size)
+                    setTextColor(ContextCompat.getColor(context, R.color.details_text_color))
+                    markwon.setMarkdown(
+                        this,
+                        mediaMetaData.value?.artist.toString()
+                    )
+                }
+            },
+            update = {
+                markwon.setMarkdown(
+                    it,
+                    mediaMetaData.value?.artist.toString()
+                )
+            }
         )
         Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            text = "${viewModel.player.currentMediaItem?.mediaMetadata?.description}",
-            fontSize = 14.sp
+        AndroidView(
+            factory = {
+                TextView(it).apply {
+                    textSize = resources.getDimension(R.dimen.detail_text_size)
+                    setTextColor(ContextCompat.getColor(context, R.color.details_text_color))
+                    markwon.setMarkdown(
+                        this,
+                        mediaMetaData.value?.description.toString()
+                    )
+                }
+            },
+            update = {
+                markwon.setMarkdown(
+                    it,
+                    mediaMetaData.value?.description.toString()
+                )
+            }
         )
     }
 }

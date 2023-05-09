@@ -39,6 +39,9 @@ class HomeScreenViewModel @Inject constructor(
     private val _hasNextItem = MutableStateFlow(false)
     val hasNextItem = _hasNextItem.asStateFlow()
 
+    private val _mediaItemMetaData = MutableStateFlow(player.currentMediaItem?.mediaMetadata)
+    val mediaItemMetaData = _mediaItemMetaData.asStateFlow()
+
     init {
         initializePlayer()
 
@@ -94,6 +97,7 @@ class HomeScreenViewModel @Inject constructor(
         player.setMediaItems(items)
         _hasPreviousItem.value = player.hasPreviousMediaItem()
         _hasNextItem.value = player.hasNextMediaItem()
+        _mediaItemMetaData.value = player.currentMediaItem?.mediaMetadata
     }
 
     fun updateIsPlaying(isPlaying: Boolean) {
@@ -118,20 +122,24 @@ class HomeScreenViewModel @Inject constructor(
         player.seekToPreviousMediaItem()
         updatePreviousNextButton()
         updateShowControls()
+        //keep the video playing when moving to next video
         if (!isPlaying.value) {
             player.play()
             updateIsPlaying(true)
         }
+        _mediaItemMetaData.value = player.currentMediaItem?.mediaMetadata
     }
 
     fun onNextVideo() {
         player.seekToNextMediaItem()
         updatePreviousNextButton()
         updateShowControls()
+        //keep the video playing when moving to previous video
         if (!isPlaying.value) {
             player.play()
             updateIsPlaying(true)
         }
+        _mediaItemMetaData.value = player.currentMediaItem?.mediaMetadata
     }
 
     fun onPlayPauseVideo() {
