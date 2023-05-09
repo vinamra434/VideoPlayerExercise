@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -20,6 +22,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:4000/\"") //to use with emulator
+//            buildConfigField("String", "BASE_URL", "\"http://localhost:4000/\"")
         }
     }
     buildFeatures {
@@ -59,4 +65,30 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.1.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    //for dependency injection
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-android-compiler:2.44"
+
+    //for ktx option
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
+    
+    //for video player
+    implementation 'com.google.android.exoplayer:exoplayer:2.18.0'
+
+    //for networking
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.11.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    //for markdown
+    implementation 'io.noties.markwon:core:4.6.2'
+
+    //for hilt viewmodel
+    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
+}
+
+kapt {
+    correctErrorTypes = true
 }
